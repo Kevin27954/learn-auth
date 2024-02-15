@@ -15,28 +15,52 @@ function updateAuthStatusDiv(status, user) {
     console.log(status);
     authStatusDiv.className = status ? "is-authed" : "not-authed";
     authStatusDiv.textContent = status
-        ? "is-authed \n" + user.username + '\n' + user.password + '\n' + user.iat
+        ? "is-authed " + user.username + " " + user.password + " " + user.iat
         : "not-authed";
 }
 
 submitBtnPA.addEventListener("click", async (e) => {
     e.preventDefault();
-    let response = await fetch(`${server}/ownauth/login`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Accept-type": "application/json",
-        },
-        body: JSON.stringify({
-            user: {
-                username: username.value,
-                password: password.value,
+    let response;
+    if (ownRefreshToken) {
+        console.log("refresh")
+        response = await fetch(`${server}/ownauth/refresh`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept-type": "application/json",
             },
-        }),
+            body: JSON.stringify({ refresh: ownRefreshToken }),
+        });
+        if (response.ok) {
+            let token = await response.json();
+            console.log(token.accessToken);
+            ownAuthToken = token.accessToken;
+        }
+    } else {
+        console.log("login")
+        response = await fetch(`${server}/ownauth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept-type": "application/json",
+            },
+            body: JSON.stringify({
+                user: {
+                    username: username.value,
+                    password: password.value,
+                },
+            }),
+        });
+        let token = await response.json();
+        ownAuthToken = token.accessToken;
+        ownRefreshToken = token.refreshToken;
+    }
+
+    updateAuthStatusDiv(response.ok, {
+        username: username.value,
+        password: password.value,
     });
-    let token = await response.json();
-    ownAuthToken = token.accessToken;
-    ownRefreshToken = token.refreshToken;
     console.log("own auth: ", ownAuthToken);
     console.log("own refresh: ", ownRefreshToken);
 });
@@ -56,23 +80,22 @@ btnAuthPA.addEventListener("click", async (e) => {
     console.log("token: ", userProfile);
 });
 
-btnRefreshPA.addEventListener('click', async () => {
+btnRefreshPA.addEventListener("click", async () => {
     let response = await fetch(`${server}/ownauth/refresh`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
             "Accept-type": "application/json",
         },
-        body: JSON.stringify({refresh: ownRefreshToken})
+        body: JSON.stringify({ refresh: ownRefreshToken }),
     });
 
-    if(response.ok) {
+    if (response.ok) {
         let token = await response.json();
         console.log(token.accessToken);
         ownAuthToken = token.accessToken;
     }
-
-})
+});
 
 submitBtnFB.addEventListener("click", (e) => {
     e.preventDefault();
