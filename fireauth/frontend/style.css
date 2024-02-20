@@ -1,0 +1,71 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    border-radius: 10px;
+}
+
+button {
+    margin: 1rem;
+}
+
+.container {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-form {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.input-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.token {
+    width: 20rem;
+    overflow: auto;
+}
+
+.is-authed, .not-authed {
+    border-radius: 1rem;
+    padding: 1rem;
+    margin: 1rem;
+    min-width: 10rem;
+    text-align: center;
+    white-space: pre-wrap;
+}
+
+.is-authed {
+    background-color: lightgreen;
+    border: solid green;
+}
+
+.not-authed {
+    background-color: lightcoral;
+    border: solid coral;
+}
+
+.token {
+    font-weight: bold;
+    border: dashed rgb(196, 223, 20);
+    padding: 10px;
+}

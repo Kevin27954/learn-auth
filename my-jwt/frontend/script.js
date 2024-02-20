@@ -1,7 +1,5 @@
 const username = document.getElementById("username");
 const password = document.getElementById("password");
-const submitBtnFB = document.getElementById("submit-btn-fb");
-const submitBtnA0 = document.getElementById("submit-btn-a0");
 const submitBtnPA = document.getElementById("submit-btn-pa");
 const btnAuthPA = document.getElementById("auth-pa");
 const btnRefreshPA = document.getElementById("refresh-pa");
